@@ -1,12 +1,10 @@
-############
-
-
-
+#####################################
+############ PRACTICA 6 #############
+#####################################
 
 import numpy as np
-###########################
 
-######Practica 6 
+
 matSust=[[ 2,-7,-5,-7],
          [-7, 2,-7,-5],
          [-5,-7, 2,-7],
@@ -14,10 +12,8 @@ matSust=[[ 2,-7,-5,-7],
 
 gapOpem=gapEXTEND= -5
 
-
 def getMaximo():
-	
-
+    pass
 
 def inciar(s1,s2,gapOpem): 
 
@@ -39,10 +35,9 @@ def inciar(s1,s2,gapOpem):
 	print(M)
 
 
-
+#####################################
 
 S1 = "AGC" #columna
 S2 = "AAG" #Fila
-
 
 inciar(S1,S2,gapOpem)
