@@ -45,23 +45,32 @@ def inciar(s1,s2,gapOpem):
 	pos_s1 = pos_s2 = ""
 	
 	M = np.zeros((len(s1)+1,len(s2)+1))
-
-	token  = 0 
-
+	A = [0,0,0,0]
+	M_vacia = []
+	vector_vacio = []
+	
+	
+	for i in range(len(s2)+1):
+		for j in range(len(s1)+1):
+			vector_vacio.append(A)
+		M_vacia.append(vector_vacio)
+		vector_vacio = []
+	
+	token  = 0
 	for i in range(1,len(s2)+1):
-
 		token = token + gapOpem
-		M[0][i] = token
+		print ("token ", token)
+		M_vacia[0][i][3] = token
 
-	token = 0 
+	token = 0
 	for i in range(1,len(s1)+1):
-
 		token = token + gapOpem
-		M[i][0] = token
+		M_vacia[i][0][3] = token
 
-	print "M = ", M
+	print ("M = ", M_vacia)
+	return
 
-	print "S = ",matSust
+	print ("S = ",matSust)
 
 	v = []
 
@@ -117,7 +126,7 @@ def inciar(s1,s2,gapOpem):
 
 		
 	print("////////Resultado//////////")
-	print  M	
+	print ( M	)
 
 
 
@@ -127,3 +136,4 @@ S2 = "AGC" #columna
 
 
 inciar(S1,S2,gapOpem) 
+
