@@ -52,7 +52,7 @@ def inciar(s1,s2,gapOpem):
 	
 	for i in range(len(s2)+1):
 		for j in range(len(s1)+1):
-			vector_vacio.append(A)
+			vector_vacio.append(A.copy())
 		M_vacia.append(vector_vacio)
 		vector_vacio = []
 	
@@ -88,9 +88,9 @@ def inciar(s1,s2,gapOpem):
 		
 			#print(v)
 			
-			f1 = M[i-1][j-1] + matSust[b][a]
-			f2 = M[i-1][j] + gapOpem
-			f3 = M[i][j-1] + gapOpem
+			f1 = M_vacia[i-1][j-1][3] + matSust[b][a]
+			f2 = M_vacia[i-1][j][3] + gapOpem
+			f3 = M_vacia[i][j-1][3] + gapOpem
 
 			v.append(f1)
 			v.append(f2)	
@@ -98,6 +98,19 @@ def inciar(s1,s2,gapOpem):
 
 			#print("Valors max", v)
 			max1 = max(v)
+			
+			cont = 0
+			for i in range(len(v)):
+				if(v[i] == max1):
+					cont=cont+1
+			
+			flecha = 0
+			
+			if(cont == 1):
+				flecha = v.index(max1)
+			else:
+				
+
 			
 			M[i][j] = max1
 
@@ -136,4 +149,3 @@ S2 = "AGC" #columna
 
 
 inciar(S1,S2,gapOpem) 
-
