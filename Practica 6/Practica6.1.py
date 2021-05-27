@@ -175,4 +175,3 @@ def inciar(s1,s2,gapOpem):
 
 
 inciar(S1,S2,gapOpem) 
-
