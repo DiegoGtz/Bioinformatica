@@ -3,6 +3,8 @@
 #####################################
 import numpy as np
 
+from Bio import SeqIO
+
 ######################## Practica 6 ###########################
 matSust=[[ 2,-7,-5,-7],
          [-7, 2,-7,-5],
@@ -19,6 +21,17 @@ vec2 = "ACGT"
 
 ss1=""
 ss2=""
+
+def lectura():
+    sequences = SeqIO.parse("P21333.fasta", "fasta")
+
+    for record in sequences:
+        data1 = str(record.seq.upper())
+
+    sequences = SeqIO.parse("Q8BTM8.fasta", "fasta")
+    for record in sequences:
+        data2 = str(record.seq.upper())
+    return data1,data2
 
 def encontrar_valor(vec1, pos):
 	for i in range(len(vec1)+1):
