@@ -1,7 +1,6 @@
 #####################################
 ############ PRACTICA 6 #############
 #####################################
-
 import numpy as np
 
 ######################## Practica 6 ###########################
@@ -12,8 +11,14 @@ matSust=[[ 2,-7,-5,-7],
 
 gapOpem=gapEXTEND= -5
 
+S1 = "AAG" #Fila
+S2 = "AGC" #columna
+
 vec1 = "ACGT"
 vec2 = "ACGT"
+
+news1 = ""
+news2 = ""
 
 def encontrar_valor(vec1, pos):
 	for i in range(len(vec1)+1):
@@ -36,10 +41,45 @@ def clear():
 	global M2
 	M2 = []
 
+def imprimir(M):
+	for i in range(len(M)):
+		for j in range(len(M)):
+			print (M[i][j][3], end="\t")
+		print()
 
-
-
-
+def camino(M):
+	global news1
+	global news2
+	global S1
+	global S2
+	
+	for i in range(len(M)-1,-1,-1):
+		for j in range(len(M)-1,-1,-1):
+			#print(M[i][j][3], end="\t")
+			if(M[i][j][0] == 1):
+				#diagonal
+				news1 += S1[j-1]
+				news2 += S2[i-1]
+			
+			if(M[i][j][1] == 1):
+				#arriba
+				news1 += "-"
+				news2 += S2[i-1] 
+				print(news1)
+				print(news2)
+				return
+			if(M[i][j][2] == 1):
+				#costado
+				news1 += S1[j-1] 
+				news2 += "-"
+			print(news1)
+			print(news2)
+			break
+		
+		print()
+		
+		
+			
 def inciar(s1,s2,gapOpem): 
 
 	pos_s1 = pos_s2 = ""
@@ -68,7 +108,6 @@ def inciar(s1,s2,gapOpem):
 		M_vacia[i][0][3] = token
 
 	print ("M = ", M_vacia)
-	return
 
 	print ("S = ",matSust)
 
@@ -99,53 +138,41 @@ def inciar(s1,s2,gapOpem):
 			#print("Valors max", v)
 			max1 = max(v)
 			
-			cont = 0
-			for i in range(len(v)):
-				if(v[i] == max1):
-					cont=cont+1
+			M_vacia[i][j][3] = max1
 			
-			flecha = 0
 			
-			if(cont == 1):
-				flecha = v.index(max1)
-			else:
-				
-
-			
-			M[i][j] = max1
-
 			if f1 == max1 : 
-				getCamino(i-1,j-1,"d")
+				M_vacia[i][j][0] = 1
 			if f2 == max1 : 
-				getCamino(i-1,j,"T")
+				M_vacia[i][j][1] = 1
 			if f3 == max1 : 
-				getCamino(i,j-1,"L")
+				M_vacia[i][j][2] = 1
 
-			
-			mi_dicc[(i,j,)] = M2
+			#mi_dicc[(i,j,)] = M2
 
 			#print (a, b)
 			#print (matSust[b][a])
 			
-			print(f1, " " ,f2, " ", f3)
+			#print(f1, " " ,f2, " ", f3)
 			#print("maximo", max(v))	
 			#print("***********************************************")
 
 			f1=f2=f3=0
+
 			v=[]
-		
-			clear()
-
-
+#		imprimir(M_vacia)
+#		return
 		
 	print("////////Resultado//////////")
-	print ( M	)
+	print(M_vacia)
+	imprimir(M_vacia)
+	print("***********************************************")
+	camino(M_vacia)
+	
+#	print(len(M))
 
-
-
-S1 = "AAG" #Fila
-S2 = "AGC" #columna
 
 
 
 inciar(S1,S2,gapOpem) 
+
