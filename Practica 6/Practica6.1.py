@@ -230,5 +230,9 @@ def inciar(s1,s2,gapOpem):
 	ss2 = ""
 
 	camino(M_vacia,i,j,ss1,ss2)
-	
+
+data1,data2=lectura()
+print(len(data1))
+print(len(data2))
+
 inciar(S1,S2,gapOpem) 
