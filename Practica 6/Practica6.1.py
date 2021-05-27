@@ -46,6 +46,10 @@ def imprimir(M):
 		for j in range(len(M)):
 			print (M[i][j][3], end="\t")
 		print()
+def verificar (M,i,j):
+	cont=0
+	if(M[i][j][0] == 1)
+		cont+=1
 
 def camino(M,i,j):
 	
@@ -54,21 +58,24 @@ def camino(M,i,j):
 	global ss1
 	global ss2
 
-	
+	verificar (M,i,j)
 	if(M[i][j][0] == 1):
 		#diagonal
 		ss1 += S1[j-1]
 		ss2 += S2[i-1]
+		print("diagonal",i-1," ",j-1)
 		if(i==0 and j==0):
+			print("aqui")
 			return
-		camino(M,i-1,j)
+		camino(M,i-1,j-1)
 			
 	if(M[i][j][1] == 1):
 		#arriba
 		ss1 += "-"
 		ss2 += S2[i-1] 
-		
+		print("arriba",i-1," ",j)
 		if(i==0 and j==0):
+			print("aqui")
 			return 
 		camino(M,i-1,j)
 		
@@ -76,8 +83,9 @@ def camino(M,i,j):
 		#costado
 		ss1 += S1[j-1] 
 		ss2 += "-"
-		
+		print("costado",i," ",j-1)
 		if(i==0 and j==0):
+			print("aqui")
 			return
 		camino(M,i,j-1)
 
