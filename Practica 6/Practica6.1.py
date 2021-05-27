@@ -17,8 +17,8 @@ S2 = "AGC" #columna
 vec1 = "ACGT"
 vec2 = "ACGT"
 
-news1 = ""
-news2 = ""
+ss1=""
+ss2=""
 
 def encontrar_valor(vec1, pos):
 	for i in range(len(vec1)+1):
@@ -47,38 +47,40 @@ def imprimir(M):
 			print (M[i][j][3], end="\t")
 		print()
 
-def camino(M):
-	global news1
-	global news2
+def camino(M,i,j):
+	
 	global S1
 	global S2
+	global ss1
+	global ss2
+
 	
-	for i in range(len(M)-1,-1,-1):
-		for j in range(len(M)-1,-1,-1):
-			#print(M[i][j][3], end="\t")
-			if(M[i][j][0] == 1):
-				#diagonal
-				news1 += S1[j-1]
-				news2 += S2[i-1]
+	if(M[i][j][0] == 1):
+		#diagonal
+		ss1 += S1[j-1]
+		ss2 += S2[i-1]
+		if(i==0 and j==0):
+			return
+		camino(M,i-1,j)
 			
-			if(M[i][j][1] == 1):
-				#arriba
-				news1 += "-"
-				news2 += S2[i-1] 
-				print(news1)
-				print(news2)
-				return
-			if(M[i][j][2] == 1):
-				#costado
-				news1 += S1[j-1] 
-				news2 += "-"
-			print(news1)
-			print(news2)
-			break
+	if(M[i][j][1] == 1):
+		#arriba
+		ss1 += "-"
+		ss2 += S2[i-1] 
 		
-		print()
+		if(i==0 and j==0):
+			return 
+		camino(M,i-1,j)
 		
+	if(M[i][j][2] == 1):
+		#costado
+		ss1 += S1[j-1] 
+		ss2 += "-"
 		
+		if(i==0 and j==0):
+			return
+		camino(M,i,j-1)
+
 			
 def inciar(s1,s2,gapOpem): 
 
@@ -148,30 +150,20 @@ def inciar(s1,s2,gapOpem):
 			if f3 == max1 : 
 				M_vacia[i][j][2] = 1
 
-			#mi_dicc[(i,j,)] = M2
-
-			#print (a, b)
-			#print (matSust[b][a])
-			
-			#print(f1, " " ,f2, " ", f3)
-			#print("maximo", max(v))	
-			#print("***********************************************")
-
 			f1=f2=f3=0
 
 			v=[]
-#		imprimir(M_vacia)
-#		return
+
 		
 	print("////////Resultado//////////")
 	print(M_vacia)
 	imprimir(M_vacia)
 	print("***********************************************")
-	camino(M_vacia)
+	i=3
+	j=3
 	
-#	print(len(M))
 
-
-
-
+	camino(M_vacia,i,j)
+	print(ss1)
+	print(ss2)
 inciar(S1,S2,gapOpem) 
