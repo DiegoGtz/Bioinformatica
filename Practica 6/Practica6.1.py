@@ -11,6 +11,18 @@ matSust=[[ 2,-7,-5,-7],
          [-5,-7, 2,-7],
          [-7,-5,-7, 2]]
 
+##Pregunta2
+#//////////////////////////////////////////////////////
+match = 2
+missMatch = -2 
+
+matSust1 = [[ match,missMatch,missMatch,missMatch],
+         [missMatch, match,missMatch,missMatch],
+         [missMatch,missMatch, match,missMatch],
+         [missMatch,missMatch,missMatch, match ]]
+
+#///////////////////////////////////////////////////////
+
 gapOpem=gapEXTEND= -5
 
 S1 = "AAG" #Fila
