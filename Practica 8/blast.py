@@ -66,10 +66,10 @@ def palabra():
 
 	for i in range(len(query)-2):
 		var = query[i] + query[i+1] + query[i+2]
-		print (var)
+		#print (var)
 		
 		random = aleatorio()
-		print ("ale:", random)
+		#print ("ale:", random)
 		
 		temp = var
 		vect_score = []
@@ -78,18 +78,16 @@ def palabra():
 			var = list(var)
 			var[random] = principal[j]
 			var = ''.join(var)
-			print (var)
+			#print (var)
 			
 			verif = score(temp, var)
-			print(verif)
+			#print(verif)
 			
 			if (verif >= 13):
 				vect_score.append(var)
-				print("mayor: ",verif) 
-			else:
-				print("menor")
+				#print("mayor: ",verif) 
 #			return
-		print(vect_score)
+		return vect_score
 		return 
 
 #################################################################
@@ -99,18 +97,30 @@ def lectura2(file):
         data = str(record.seq.upper())
     return data
 
-lec = lectura2("Dataset/A5LGW7.fasta")
-#print(lec)
-#palabra()
+def compara(lec,a):
+	var=0 
+	cad= ""
+	# GSI 
+	# MNMSRQ0GIFQ
+	#  NMSRQGIFQ
+	for j in range (len(a)):
+		cad= a[j]
+		#print (cad)
+		for i in range (len(lec)-2):
+			if (cad[0]== lec[i] and cad[1]== lec[i+1] and cad[2]== lec[i+2]):
+				var+=1
 
-file = open("prueba.txt", "r")
+		print (var, cad)
+		var=0
 
-line = file.readline()
-print(line)
+def archivos():
+	a=palabra()
+	for i in range(1,12):
+		file = "Dataset/" + str(i) + ".fasta"
+		print(file)
+		lec = lectura2(file)
+		compara(lec,a)
 
-#inicia el puntero
-pos = file.tell()
+archivos()
 
-print(pos)
-file.close()
 
