@@ -59,7 +59,7 @@ def palabra():
 	for i in range(len(query)-2):
 	#for i in range(28):
 		var = query[i] + query[i+1] + query[i+2]
-		vector_score.append(var)
+		#vector_score.append(var)
 		random = aleatorio()
 		
 		temp = var
@@ -90,6 +90,7 @@ def lectura(file,a):
 	#tell() obtener posicion
 	#seek() ir a la posicion
 	vector = a
+	print("-----------", vector)
 	vecto_final= []
 	for i in range (len(vector)):
 		f=open(file, "r") 
