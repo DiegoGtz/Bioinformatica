@@ -193,7 +193,10 @@ def costados(lec, file):
 
 def dataset_recorrido():
 	a=palabra() #score de las palabras 
-	
+	for i in range (len(a)):
+		print (a[i][2], end = " ")
+	print ()
+	return 
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
 		print(file)
