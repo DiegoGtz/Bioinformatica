@@ -56,6 +56,7 @@ def palabra():
 	var = ""
 	
 	vector_score = []
+
 	for i in range(len(query)-2):
 	#for i in range(28):
 		var = query[i] + query[i+1] + query[i+2]
@@ -74,14 +75,17 @@ def palabra():
 			#print(verif)
 			
 			if (verif >= 13):
-				vector_score.append(var)
+				vect_vac = []
+				vect_vac.append(temp)
+				vect_vac.append(var)
+				vector_score.append(vect_vac)
 				#print("mayor: ",verif) 
 	
 	return vector_score
 
 def ver_comparacion(vector):
 	for i in range(len(vector)):
-		print(vector[i][0], end = "\t")
+		print(vector[i][0][0], " ", vector[i][0][1], end = "\t")
 		for j in range(len(vector[i][1])):
 			print(vector[i][1][j], end = "\t")
 		print()
@@ -89,12 +93,13 @@ def ver_comparacion(vector):
 def lectura(file,a):
 	#tell() obtener posicion
 	#seek() ir a la posicion
+	
 	vector = a
-	print("-----------", vector)
 	vecto_final= []
+
 	for i in range (len(vector)):
 		f=open(file, "r") 
-		var1 = vector[i]
+		var1 = vector[i][1]
 		var2 = []
 		cont = 0
 		linea=f.readline()
@@ -146,11 +151,14 @@ def lectura(file,a):
 		#print("contador:", cont)
 		#print (vector)
 		#print(var1, var2)
+		
 		p=[]
+		print(vector[i])
+		p.append(vector[i][0])
 		p.append(var1)
 		p.append(var2)
 		if len(var2) > 1:
-			vecto_final.append(p)
+			vecto_final.append(p.copy())
 		
 	#print(vecto_final)
 	#ver_comparacion(vecto_final)
@@ -167,12 +175,16 @@ def costados(lec, file):
 def dataset_recorrido():
 	a=palabra() #score de las palabras 
 	
+	
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
 		print(file)
 
 		lectura_vect = lectura(file,a) #retorna un vector de las coincidencias de palabra
-		costados(lectura_vect, file)	
+		print(lectura_vect)
+		#ver_comparacion(lectura_vect)
 		break
+		costados(lectura_vect, file)	
+		
 
 dataset_recorrido()
