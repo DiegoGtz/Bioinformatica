@@ -96,6 +96,13 @@ def lectura2(file):
         data = str(record.seq.upper())
     return data
 
+def ver_comparacion(vector):
+	for i in range(len(vector)):
+		print(vector[i][0], end = "\t")
+		for j in range(len(vector[i][1])):
+			print(vector[i][1][j], end = "\t")
+		print()
+
 def lectura3(file,a):
 	#tell() obtener posicion
 	#seek() ir a la posicion
@@ -161,7 +168,8 @@ def lectura3(file,a):
 		if len(var2) != 0:
 			vecto_final.append(p)
 		
-	print(vecto_final)
+	#print(vecto_final)
+	ver_comparacion(vecto_final)
 
 def compara(lec,a):
 	var=0 
@@ -190,6 +198,3 @@ def archivos():
 
 
 archivos()
-print(len(query))
-
-
