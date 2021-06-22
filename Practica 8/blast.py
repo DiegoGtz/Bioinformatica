@@ -58,9 +58,9 @@ def palabra():
 	vector_score = []
 
 	for i in range(len(query)-2):
-	#for i in range(28):
+		
 		var = query[i] + query[i+1] + query[i+2]
-		#vector_score.append(var)
+		
 		random = aleatorio()
 		
 		temp = var
@@ -85,9 +85,9 @@ def palabra():
 
 def ver_comparacion(vector):
 	for i in range(len(vector)):
-		print(vector[i][0][0], " ", vector[i][0][1], end = "\t")
-		for j in range(len(vector[i][1])):
-			print(vector[i][1][j], end = "\t")
+		print(vector[i][0]," ",vector[i][1], " ", vector[i][2], end = "\t")
+		for j in range(len(vector[i][3])):
+			print(vector[i][3][j], end = "\t")
 		print()
 
 def lectura(file,a):
@@ -97,9 +97,9 @@ def lectura(file,a):
 	vector = a
 	vecto_final= []
 
-	for i in range (len(vector)):
+	for j in range (len(vector)):
 		f=open(file, "r") 
-		var1 = vector[i][1]
+		var1 = vector[j][1]
 		var2 = []
 		cont = 0
 		linea=f.readline()
@@ -153,8 +153,8 @@ def lectura(file,a):
 		#print(var1, var2)
 		
 		p=[]
-		print(vector[i])
-		p.append(vector[i][0])
+		p.append(vector[j][0])
+		p.append(j)
 		p.append(var1)
 		p.append(var2)
 		if len(var2) > 1:
@@ -181,8 +181,8 @@ def dataset_recorrido():
 		print(file)
 
 		lectura_vect = lectura(file,a) #retorna un vector de las coincidencias de palabra
-		print(lectura_vect)
-		#ver_comparacion(lectura_vect)
+		#print(lectura_vect)
+		ver_comparacion(lectura_vect)
 		break
 		costados(lectura_vect, file)	
 		
