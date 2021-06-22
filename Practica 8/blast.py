@@ -1,7 +1,7 @@
 from random import randint, uniform,random
 from Bio import SeqIO
 
-query = "GSVEDTTGSQSLAALLNKCKTPQGKRLUVNQWIKQPLMDKNRIEERLNLVEAFVEDAELRQTLQEDL"
+query = "GSVEDTTGSQSLAALLNKCKTPQGKRLVNQWIKQPLMDKNRIEERLNLVEAFVEDAELRQTLQEDL"
 
 principal = "ARNDCQEGHILKMFPSTWYVBJZX"
 
@@ -63,16 +63,15 @@ def score(temp, var):
 
 def palabra():
 	var = ""
-
+	
+	vector_score = []
 	for i in range(len(query)-2):
+	#for i in range(28):
 		var = query[i] + query[i+1] + query[i+2]
-		#print (var)
 		
 		random = aleatorio()
-		#print ("ale:", random)
 		
 		temp = var
-		vect_score = []
 		
 		for j in range(len(principal)):
 			var = list(var)
@@ -84,11 +83,11 @@ def palabra():
 			#print(verif)
 			
 			if (verif >= 13):
-				vect_score.append(var)
+				vector_score.append(var)
 				#print("mayor: ",verif) 
-#			return
-		return vect_score
-		return 
+	
+	return vector_score
+	
 
 #################################################################
 def lectura2(file):
@@ -180,6 +179,8 @@ def compara(lec,a):
 
 def archivos():
 	a=palabra()
+	print(a)
+	return
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
 		print(file)
@@ -188,5 +189,6 @@ def archivos():
 
 
 archivos()
+print(len(query))
 
 
