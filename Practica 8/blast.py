@@ -133,7 +133,7 @@ def lectura3(file,a):
 					if caract == var1:
 						cont = cont + 1
 						var2.append(temp+i)
-						print("------------------")
+						#print("------------------")
 					#print(caract)
 
 					a =  b
@@ -143,14 +143,14 @@ def lectura3(file,a):
 					if caract == var1:
 						cont = cont + 1
 						var2.append(temp+1+i)
-						print("------------------")
+						#print("------------------")
 					#print(caract)
 				else:
 					caract = a+b+c
 					if caract == var1:
 						cont = cont + 1
 						var2.append(temp+i)
-						print("------------------")
+						#print("------------------")
 					#print(caract)	
 			temp=posi
 		#print("contador:", cont)
@@ -183,8 +183,8 @@ def archivos():
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
 		print(file)
-		lec = lectura3(file,a)
-		compara(lec,a)
+		lectura3(file,a)
+		#compara(lec,a)
 
 
 archivos()
