@@ -168,10 +168,27 @@ def lectura(file,a):
 
 def costados(lec, file):
 	f = open(file)
-	f.seek(1662)
-	print("dato -----",f.read(3))
+	d=1
+	
+	for i in range (len(lec)):
 
-	ver_comparacion(lec)
+		for j in range (len(lec[i][3])):
+			print(lec[i][1]," ",lec[i][3][j])
+			a=lec[i][1]
+			b=lec[i][3][j]
+			if (a==0):
+				print("Derecha")
+				
+				print()
+			elif (a==63):
+				print ("Izquierda")
+			else:
+				print("ambos")
+				query2=query[a]+query[a+1]+query[a+2]
+				f.seek(b)
+				g=g+2*d
+				print(query2, " ",f.read(g))
+
 	f.close()
 
 def dataset_recorrido():
@@ -182,10 +199,9 @@ def dataset_recorrido():
 		print(file)
 
 		lectura_vect = lectura(file,a) #retorna un vector de las coincidencias de palabra
-		#print(lectura_vect)
 		ver_comparacion(lectura_vect)
-		break
-		costados(lectura_vect, file)	
+		#costados(lectura_vect, file)
+			
 		
 
 dataset_recorrido()
