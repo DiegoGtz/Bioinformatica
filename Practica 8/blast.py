@@ -31,15 +31,6 @@ blom62 = [[4,-1,-2,-2,0,-1,-1,0,-2,-1,-1,-1,-1,-2,-1,1,0,-3,-2,0,-2,-1,-1,-1,-4]
 		  [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-4],
 		  [-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,1]]
 
-def lectura():
-    sequences = SeqIO.parse("Q8BTM8.fasta", "fasta")
-    for record in sequences:
-        data = str(record.seq.upper())
-    return data
-
-#query = lectura()
-
-#################################################################
 def aleatorio():
 
 	return randint(0,2)
@@ -68,7 +59,7 @@ def palabra():
 	for i in range(len(query)-2):
 	#for i in range(28):
 		var = query[i] + query[i+1] + query[i+2]
-		
+		vector_score.append(var)
 		random = aleatorio()
 		
 		temp = var
@@ -87,14 +78,6 @@ def palabra():
 				#print("mayor: ",verif) 
 	
 	return vector_score
-	
-
-#################################################################
-def lectura2(file):
-    sequences = SeqIO.parse(file, "fasta")
-    for record in sequences:
-        data = str(record.seq.upper())
-    return data
 
 def ver_comparacion(vector):
 	for i in range(len(vector)):
@@ -103,7 +86,7 @@ def ver_comparacion(vector):
 			print(vector[i][1][j], end = "\t")
 		print()
 
-def lectura3(file,a):
+def lectura(file,a):
 	#tell() obtener posicion
 	#seek() ir a la posicion
 	vector = a
@@ -165,36 +148,30 @@ def lectura3(file,a):
 		p=[]
 		p.append(var1)
 		p.append(var2)
-		if len(var2) != 0:
+		if len(var2) > 1:
 			vecto_final.append(p)
 		
 	#print(vecto_final)
-	ver_comparacion(vecto_final)
+	#ver_comparacion(vecto_final)
+	return vecto_final
 
-def compara(lec,a):
-	var=0 
-	cad= ""
-	# GSI 
-	# MNMSRQ0GIFQ
-	#  NMSRQGIFQ
-	for j in range (len(a)):
-		cad= a[j]
-		#print (cad)
-		for i in range (len(lec)-2):
-			if (cad[0]== lec[i] and cad[1]== lec[i+1] and cad[2]== lec[i+2]):
-				var+=1
+def costados(lec, file):
+	f = open(file)
+	f.seek(1662)
+	print("dato -----",f.read(3))
 
-		print (var, cad)
-		var=0
+	ver_comparacion(lec)
+	f.close()
 
-def archivos():
-	a=palabra()
+def dataset_recorrido():
+	a=palabra() #score de las palabras 
 	
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
 		print(file)
-		lectura3(file,a)
-		#compara(lec,a)
 
+		lectura_vect = lectura(file,a) #retorna un vector de las coincidencias de palabra
+		costados(lectura_vect, file)	
+		break
 
-archivos()
+dataset_recorrido()
