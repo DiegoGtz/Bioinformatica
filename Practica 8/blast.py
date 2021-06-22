@@ -97,6 +97,63 @@ def lectura2(file):
         data = str(record.seq.upper())
     return data
 
+def lectura3(file):
+	#tell() obtener posicion
+	#seek() ir a la posicion
+
+	f=open("Q8BTM8.fasta", "r")
+	vector = ('CVS', 'SGV')
+	var1 = vector[0]
+	var2 = []
+	cont = 0
+	linea=f.readline()
+	#print(len(linea))
+	posi=f.tell()
+	linea=f.readline()
+	#print(len(linea))
+	while linea != "":
+		#linea=linea[:-1]
+		print(posi,"  ",linea[:-1])
+
+		for i in range(len(linea)-2):
+			a = linea[i]
+			b = linea[i+1]
+			c = linea[i+2]
+
+			if c == '\n':
+				posi=f.tell()
+				linea=f.readline()
+
+				if linea == "":
+					break
+				c = linea[0]
+				caract = a+b+c
+				if caract == var1:
+					cont = cont + 1
+					var2.append(posi+i)
+					print("------------------")
+				#print(caract)
+
+				a =  b
+				b  = c
+				c =  linea[1]
+				caract = a+b+c
+				if caract == var1:
+					cont = cont + 1
+					var2.append(posi+i)
+					print("------------------")
+				#print(caract)
+			else:
+				caract = a+b+c
+				if caract == var1:
+					cont = cont + 1
+					var2.append(posi+i)
+					print("------------------")
+				#print(caract)	
+		
+	print("contador:", cont)
+	print(var1, var2)
+
 def compara(lec,a):
 	var=0 
 	cad= ""
@@ -109,7 +166,6 @@ def compara(lec,a):
 		for i in range (len(lec)-2):
 			if (cad[0]== lec[i] and cad[1]== lec[i+1] and cad[2]== lec[i+2]):
 				var+=1
-		print(lec.tell())
 
 		print (var, cad)
 		var=0
@@ -122,20 +178,8 @@ def archivos():
 		lec = lectura2(file)
 		compara(lec,a)
 
+
+lectura3("a")
 #archivos()
-f=open("Q8BTM8.fasta", "r")
-
-linea=f.readline()
-print(len(linea))
-posi=f.tell()
-linea=f.readline()
-print(len(linea))
-while linea != "":
-	linea=linea[:-1]
-	print(posi,"  ",linea)
-	posi=f.tell()
-	linea=f.readline()
-
-
 
 
