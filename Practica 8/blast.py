@@ -71,12 +71,13 @@ def palabra():
 			var = ''.join(var)
 			#print (var)
 			
-			verif = score(temp, var)
+			verif= score(temp, var)
 			#print(verif)
 			
 			if (verif >= 13):
 				vect_vac = []
 				vect_vac.append(temp)
+				vect_vac.append(i)
 				vect_vac.append(var)
 				vector_score.append(vect_vac)
 				#print("mayor: ",verif) 
@@ -99,7 +100,7 @@ def lectura(file,a):
 
 	for j in range (len(vector)):
 		f=open(file, "r") 
-		var1 = vector[j][1]
+		var1 = vector[j][2]
 		var2 = []
 		cont = 0
 		linea=f.readline()
@@ -153,8 +154,9 @@ def lectura(file,a):
 		#print(var1, var2)
 		
 		p=[]
+
 		p.append(vector[j][0])
-		p.append(j)
+		p.append(vector[j][1])
 		p.append(var1)
 		p.append(var2)
 		if len(var2) > 1:
@@ -174,7 +176,6 @@ def costados(lec, file):
 
 def dataset_recorrido():
 	a=palabra() #score de las palabras 
-	
 	
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
