@@ -158,7 +158,9 @@ def lectura3(file,a):
 		p=[]
 		p.append(var1)
 		p.append(var2)
-		vecto_final.append(p)
+		if len(var2) != 0:
+			vecto_final.append(p)
+		
 	print(vecto_final)
 
 def compara(lec,a):
@@ -179,8 +181,7 @@ def compara(lec,a):
 
 def archivos():
 	a=palabra()
-	print(a)
-	return
+	
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
 		print(file)
