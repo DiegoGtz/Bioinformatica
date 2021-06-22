@@ -97,62 +97,70 @@ def lectura2(file):
         data = str(record.seq.upper())
     return data
 
-def lectura3(file):
+def lectura3(file,a):
 	#tell() obtener posicion
 	#seek() ir a la posicion
+	vector = a
+	vecto_final= []
+	for i in range (len(vector)):
+		f=open(file, "r") 
+		var1 = vector[i]
+		var2 = []
+		cont = 0
+		linea=f.readline()
+		#print(len(linea))
+		posi=f.tell()
+		linea=f.readline()
+		#print(len(linea))
+		while linea != "":
+			#linea=linea[:-1]
+			#print(posi,"  ",linea[:-1])
+			temp= posi
+			for i in range(len(linea)-2):
+				a = linea[i]
+				b = linea[i+1]
+				c = linea[i+2]
 
-	f=open("Q8BTM8.fasta", "r")
-	vector = ('CVS', 'SGV')
-	var1 = vector[0]
-	var2 = []
-	cont = 0
-	linea=f.readline()
-	#print(len(linea))
-	posi=f.tell()
-	linea=f.readline()
-	#print(len(linea))
-	while linea != "":
-		#linea=linea[:-1]
-		print(posi,"  ",linea[:-1])
+				if c == '\n':
+					posi=f.tell()
+					#print(posi)
+					linea=f.readline()
 
-		for i in range(len(linea)-2):
-			a = linea[i]
-			b = linea[i+1]
-			c = linea[i+2]
+					if linea == "":
+						break
+					c = linea[0]
+					caract = a+b+c
+					if caract == var1:
+						cont = cont + 1
+						var2.append(temp+i)
+						print("------------------")
+					#print(caract)
 
-			if c == '\n':
-				posi=f.tell()
-				linea=f.readline()
-
-				if linea == "":
-					break
-				c = linea[0]
-				caract = a+b+c
-				if caract == var1:
-					cont = cont + 1
-					var2.append(posi+i)
-					print("------------------")
-				#print(caract)
-
-				a =  b
-				b  = c
-				c =  linea[1]
-				caract = a+b+c
-				if caract == var1:
-					cont = cont + 1
-					var2.append(posi+i)
-					print("------------------")
-				#print(caract)
-			else:
-				caract = a+b+c
-				if caract == var1:
-					cont = cont + 1
-					var2.append(posi+i)
-					print("------------------")
-				#print(caract)	
-		
-	print("contador:", cont)
-	print(var1, var2)
+					a =  b
+					b  = c
+					c =  linea[1]
+					caract = a+b+c
+					if caract == var1:
+						cont = cont + 1
+						var2.append(temp+1+i)
+						print("------------------")
+					#print(caract)
+				else:
+					caract = a+b+c
+					if caract == var1:
+						cont = cont + 1
+						var2.append(temp+i)
+						print("------------------")
+					#print(caract)	
+			temp=posi
+		#print("contador:", cont)
+		#print (vector)
+		#print(var1, var2)
+		p=[]
+		p.append(var1)
+		p.append(var2)
+		vecto_final.append(p)
+	print(vecto_final)
 
 def compara(lec,a):
 	var=0 
@@ -175,11 +183,10 @@ def archivos():
 	for i in range(1,12):
 		file = "Dataset/" + str(i) + ".fasta"
 		print(file)
-		lec = lectura2(file)
+		lec = lectura3(file,a)
 		compara(lec,a)
 
 
-lectura3("a")
-#archivos()
+archivos()
 
 
