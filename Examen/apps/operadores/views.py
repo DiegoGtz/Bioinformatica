@@ -361,6 +361,12 @@ class Algoritmos_Distancia():
 			d = self.distance(new_seq, sequences_read[seq_id])
 			return new_seq_id, seq_id, d
 
+
+######################### Codigo kimura ################################
+
+
+#########################################################################################################
+
 class Operadores():
 	def inicio(request):
 		return render(request,'Home.html')
@@ -383,8 +389,8 @@ class Operadores():
 			return render(request,'RaiseToPower.html',{"Algo":tipo})
 		elif(tipo == "Jukes-cantor"):
 			return render(request,'JudesCantor.html',{"Algo":tipo})	
-		elif(tipo == "Kimura model"):
-			return render(request,'RaiseToPower.html',{"Algo":tipo})	
+		elif(tipo == "KimuraModel"):
+			return render(request,'KimuraModel.html',{"Algo":tipo})	
 		elif(tipo == "UPGMA"):
 			return render(request,'RaiseToPower.html',{"Algo":tipo})
 		elif(tipo == "Neighbor Joining"):
@@ -441,6 +447,18 @@ class Operadores():
 
 			print(id,"\t", seq,"\t", d)
 			return render(request,'resultadoJudes.html',{"labels2":tipo,"id": id,"seq":seq,"d":d} )	
+
+		if(tipo == "KimuraModel"):
+
+			_seq1 = request.POST['Seq1']
+			_seq2 = request.POST['Seq2']	
+
+			distanciaK = Algoritmos_Distancia()
+			res1 =  distanciaK.pdistance(_seq1,_seq2)
+			res2 = distanciaK.K2Pdistance(_seq1,_seq2)
+
+			return render(request,'ResultadoKimura.html',{"labels2":tipo,"res1": res1, "res2": res2} )	
+
 
 	
 		return render(request,'Home.html')

@@ -1,0 +1,38 @@
+{% extends 'Home.html' %}
+{%block content%}
+{%endblock%}
+{% block services %}
+    <!--Contenedor Para poder Cargar Imagenes-->
+    <section id="services">
+      <div class="container wow fadeIn">
+        <br>
+        <br>
+        <div class="section-header">
+            <h3 class="section-title">Algoritmo {{Algo}}</h3>
+            <br>
+            <p class="section-description">Ingrese los valores necesarios</p>
+     
+       </div>
+
+    <div class="box">
+      <div class="drag-drop">
+        <form action="{% url 'Home2:ControladorOperador' %}" method='post' enctype="multipart/form-data">{% csrf_token %}
+        <p class="section-description">Ingrese los parametros</p>
+        <br>
+        <label for=""> seq1= </label>
+        <input type="text" id="" name="Seq1">  
+        <br>
+        <label for=""> seq2 = </label>
+        <input type="text" id="" name="Seq2"> 
+        <br>  
+        <input type="hidden" id="" name="Tipo" value={{Algo}} > 
+        </div>
+        <br>
+       <button type="submit" class="btn btn-outline-secondary">Analyze</button>
+        </form>
+    </div>
+      </div>
+    </section>
+{% endblock %}
+{% block portafolio %}
+{% endblock %}
