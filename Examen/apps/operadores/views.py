@@ -12,7 +12,7 @@ from django.core.files.base import ContentFile
 #import cv2 
 import numpy as np
 from matplotlib import pyplot as plt 
-import	 math 
+import	re, math 
 
 def inicio(request):
     return render(request,'Home.html')
@@ -332,6 +332,10 @@ class Algoritmos2():
 		return self.Solution
 
 
+class Algoritmos_Distancia():
+
+
+
 
 
 class Operadores():
@@ -355,7 +359,7 @@ class Operadores():
 		elif(tipo == "Muscle"):
 			return render(request,'RaiseToPower.html',{"Algo":tipo})
 		elif(tipo == "Jukes-cantor"):
-			return render(request,'RaiseToPower.html',{"Algo":tipo})	
+			return render(request,'JudesCantor.html',{"Algo":tipo})	
 		elif(tipo == "Kimura model"):
 			return render(request,'RaiseToPower.html',{"Algo":tipo})	
 		elif(tipo == "UPGMA"):
@@ -363,38 +367,6 @@ class Operadores():
 		elif(tipo == "Neighbor Joining"):
 			return render(request,'RaiseToPower.html',{"Algo":tipo})
 
-		'''if(tipo == "Thresholding"):
-			return render(request,'Thresholding.html',{"labels":tipo})
-		elif(tipo == "Outlier_C.Stretching"):
-			return render(request,'Outlier_Contrast_Stretching.html',{"labels":tipo})	
-		elif(tipo == "Contrast_stretching"):
-			return render(request,'Contrast_stretching.html',{"labels":tipo})		
-		elif(tipo == "E.Histograma"):
-			return render(request,'Ecualizacion_Histograma.html',{"labels":tipo})
-		elif(tipo == "O.Logaritmico"):
-			return render(request,'PageOperador.html',{"labels":tipo})
-		elif(tipo == "O.Raiz"):
-			return render(request,'PageOperador.html',{"labels":tipo})
-		elif(tipo == "O.Exponencial"):
-			return render(request,'Operador_Exponencial.html',{"labels":tipo})	
-		elif(tipo == "O.RaiseToPower"):
-			return render(request,'RaiseToPower.html',{"labels":tipo})
-		elif(tipo == "Cascada"):
-
-			return render(request,'Cascada.html',{"labels":tipo})		
-
-		elif(tipo == "Add"):
-
-			return render(request,'Addition.html',{"labels":tipo})	
-		elif(tipo == "Subtraction"):
-			return render(request,'Subtraction.html',{"labels":tipo})	
-
-		elif(tipo == "Multiplicacion" ):
-			return render(request,'Multiplicacion.html',{"labels":tipo})
-		elif(tipo == "Blending" ):
-			return render(request,'Blending.html',{"labels":tipo})
-		elif(tipo == "Division" ):
-			return render(request,'Division.html',{"labels":tipo})'''
 	def ControladorOperador(request):
 
 		#id = request.POST['fase']
@@ -434,106 +406,20 @@ class Operadores():
 			return render(request,'ResulTOperador.html',{"labels2":tipo,"resultados": resultado} )	
 
 
-		'''#print(file_name,file_name2)
-		if(tipo == "Thresholding"):
-			min1 = request.POST['min']
-			max2 = request.POST['max']			
-			resultado =  Algoritmos.Thresholding(file_name,int(min1),int(max2))
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
+		if(tipo == "Jukes-cantor"):
 
-		if(tipo == "Outlier_C.Stretching"):
-			a = request.POST['a']
-			b = request.POST['b']
-			Low = request.POST['Low']
-			Max = request.POST['Max']
-			resultado = Algoritmos.Outlier_Contrast_Stretching(file_name,int(a),int(b),int(Low),int(Max))
+			_id1 = request.POST['id1']
+			_id2 = request.POST['id2']
+			_seq1 = request.POST['Seq1']
+			_seq2 = request.POST['Seq2']	
 
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if(tipo == "Contrast_stretching"):
-			a = request.POST['a']
-			b = request.POST['b']
-			resultado = Algoritmos.Contrast_Stretching(file_name,int(a),int(b))
+			distancia = Algoritmos_Distancia()
+			id, seq, d  =  distancia.main2(_id1,_seq1,_id2,_seq2)
 
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
+			print(id,"\t", seq,"\t", d)
+			return render(request,'resultadoJudes.html',{"labels2":tipo,"id": id,"seq":seq,"d":d} )	
 
-		if(tipo == "E.Histograma"):
-			resultado = Algoritmos.ecualizacion_histograma(file_name)
-
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if(tipo == "O.Logaritmico"):
-			c = request.POST['c']
-			resultado = Algoritmos.operador_logaritmo(file_name,int(c))
-
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-
-		if(tipo == "O.Raiz"):
-			c = request.POST['c']
-			resultado = Algoritmos.operador_Root(file_name,int(c))
-
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if(tipo == "O.Exponencial"):
-			c = request.POST['c']
-			b = request.POST['b']
-			
-			resultado = Algoritmos.operador_Exponencial(file_name,float(c),float(b))
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )	
-		if(tipo == "O.RaiseToPower"):
-			c = request.POST['c']
-			r = request.POST['r']
-			
-			resultado = Algoritmos.operador_Raise_to_power(file_name,float(c),float(r))
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if(tipo == "Cascada"):
-
-			a,b = 0 , 255 
-			Resultado1 =  Algoritmos.Contrast_Stretching(file_name,a,b)
-			Resultado2 = Algoritmos.ecualizacion_histograma(file_name)
-			c = 70 
-			Resultado3 = Algoritmos.operador_logaritmo(file_name,c)
-			c =20
-			Resultado4 = Algoritmos.operador_Root(file_name,c)
-			c,b = 20 , 1.01
-			Resultado5 = Algoritmos.operador_Exponencial(file_name,c,b)
-			c, r = 0.1 , 1.5
-			Resultado6 = Algoritmos.operador_Raise_to_power(file_name,c,r)
-
-			return render(request,'Resultado_Cascada.html',{"labels2":tipo,
-				"image":"/"+Resultado1,
-				"image2":"/"+Resultado2,
-				"image3":"/"+Resultado3,
-				"image4":"/"+Resultado4,
-				"image5":"/"+Resultado5,
-				"image6":"/"+Resultado6,
-				} )		
-
-
-		if (tipo == "Add"):
-			#return render(request,'Home.html')
-			resultado = Algoritmos.pixel_adition(file_name,file_name2)
-		
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if (tipo == "Subtraction"):
-
-			resultado = Algoritmos.pixel_sustraction(file_name,file_name2)
-			
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if (tipo == "Multiplicacion"):
-			c = request.POST['c']
-			resultado = Algoritmos.multiplication(file_name,int(c))
-		
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if (tipo == "Blending"):
-			#return render(request,'Home.html')
-			x = request.POST['x']
-
-			resultado = Algoritmos.blending(file_name,file_name2,float(x))
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		if (tipo == "Division"):
-			#return render(request,'Home.html')
-			resultado = Algoritmos.pixel_division(file_name,file_name2)
-		
-			return render(request,'ResulTOperador.html',{"labels2":tipo,"image":"/"+resultado} )
-		'''
+	
 		return render(request,'Home.html')
 
 
