@@ -17,6 +17,9 @@ from io import StringIO
 
 import pylab
 
+import pandas as pd
+import numpy as np
+
 #import cv2 
 import numpy as np
 from matplotlib import pyplot as plt 
@@ -581,8 +584,17 @@ class Operadores():
 
 		if(tipo == "UPGMA"):
 
-			_seq1 = request.POST['Seq1']
-			_seq2 = request.POST['Seq2']	
+			myfile = request.FILES["file1"]
+			print(myfile)
+			fs = FileSystemStorage()
+			filename = fs.save(myfile.name, myfile)
+			file_name = fs.url(filename)
+
+			data = pd.read_csv(file_name)
+
+			x = np.array(data)
+			print(x)
+		
 			upgma = _UPGMA()
 			res3= upgma.UPGMA()
 			tree = Phylo.read(StringIO(res3), "newick")
