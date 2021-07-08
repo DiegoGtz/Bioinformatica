@@ -9,7 +9,7 @@ from django.core.files.base import ContentFile
 
 #####################################################
 
-import cv2 
+#import cv2 
 import numpy as np
 from matplotlib import pyplot as plt 
 import	 math 
@@ -17,57 +17,81 @@ import	 math
 def inicio(request):
     return render(request,'Home.html')
 
-class Algoritmos ():
 
-	gap 		= 0 
-	match 		= 0
-	MissMatch	= 0
-	Seq1 = "AAG"
-	Seq2 = "AGC"
-	column = len(Seq1)+1
-	row = len(Seq2)+1
-	Solution = []
+
+class Algoritmos2():
+
+	def __init__(self,s1,s2,gap,m1,m2):
+		self.gapOpem = gap
+		self.S1 = s1 #Fila
+		self.S2 = s2 #columna
+		self.identicalMatch = m1
+		self.mismatch = m2
+		self.ss1=""
+		self.ss2=""
+
+		self.column = len(self.S1)+1
+		self.row = len(self.S2)+1
+
+		self.vec = []
+
+		self.Solution = []
+
+
    
-   
-	vec1 = {'A':0,'C':1,'G':2,'T':3}
-	matrix_sus =  [[ 2,-7,-5,-7],
-        		   [-7, 2,-7,-5],
-        		   [-5,-7, 2,-7],
-        		   [-7,-5,-7, 2]]
+		self.vec1 = {'A':0,'C':1,'G':2,'T':3}
+		self.matrix_sus =  [[ 2,-7,-5,-7],
+	        		   [-7, 2,-7,-5],
+	        		   [-5,-7, 2,-7],
+	        		   [-7,-5,-7, 2]]
+
+	###########Pegarlo Aqui Javox#############
 
 
 
-	def get_sequences(F, i, j, alignmented_seq1 = "", alignmented_seq2 = ""):
+
+
+	###############################################
+
+
+	def get_sequences(self,F, i, j, alignmented_seq1 = "", alignmented_seq2 = ""):
 		if F[i][j][0]==0:
 			print("\t\t Alineamiento ")
-			Algoritmos.Solution.append(alignmented_seq1)
-			Algoritmos.Solution.append(alignmented_seq2)	
+			self.Solution.append(alignmented_seq1)
+			self.Solution.append(alignmented_seq2)	
 			#print (alignmented_seq1)
 			#print (alignmented_seq2)	
 			return
 		if i > 0 or j > 0:			
 			if (i>0 and j>0 and F[i][j][1] == 'D'):		
-				alignmented_seq1 = Algoritmos.Seq1[j-1] + alignmented_seq1
-				alignmented_seq2 = Algoritmos.Seq2[i-1] + alignmented_seq2
+				alignmented_seq1 = self.S1[j-1] + alignmented_seq1
+				alignmented_seq2 = self.S2[i-1] + alignmented_seq2
 				i = i-1
 				j = j-1
 			elif (i>0 and F[i][j][1]=='U'):
 				alignmented_seq1 = "-" + alignmented_seq2	
-				alignmented_seq2 = Algoritmos.Seq2[i-1] + alignmented_seq2
+				alignmented_seq2 = self.S2[i-1] + alignmented_seq2
 				i = i-1
 			else:
 				alignmented_seq2 = "-" + alignmented_seq2
-				alignmented_seq1 = Algoritmos.Seq1[j-1] + alignmented_seq1
+				alignmented_seq1 = self.S1[j-1] + alignmented_seq1
 				j = j-1
-			Algoritmos.get_sequences(F, i, j, alignmented_seq1, alignmented_seq2)			
+			self.get_sequences(F, i, j, alignmented_seq1, alignmented_seq2)	
 
-	def local_alignment(F, i=1, j=1):
+	def local_alignment(self,F, i=1, j=1):
 	
-		row = Algoritmos.row
-		column = Algoritmos.column
-		diag = F[i-1][j-1][0] + Algoritmos.matrix_sus[Algoritmos.vec1[Algoritmos.Seq2[i-1]]][Algoritmos.vec1[Algoritmos.Seq1[j-1]]]
-		up = F[i-1][j][0] + Algoritmos.gap
-		left = F[i][j-1][0] + Algoritmos.gap
+		row = self.row
+		column = self.column
+
+		value = self.identicalMatch
+			
+		if self.S1[i-1] != self.S2[j-1]:
+			value = self.mismatch  
+
+
+		diag = F[i-1][j-1][0] + value
+		up = F[i-1][j][0] + self.gapOpem
+		left = F[i][j-1][0] + self.gapOpem
 		F[i][j][0]	= max(diag, up, left, 0)
 		if F[i][j][0]==diag:
 			F[i][j][1] = 'D'	
@@ -91,29 +115,23 @@ class Algoritmos ():
 						i = r
 						j = c
 						mayor = F[r][c][0]
-			Algoritmos.get_sequences(F, i, j)
-			Algoritmos.get_sequences(F, s_i, s_j)
+			self.get_sequences(F, i, j)
+			self.get_sequences(F, s_i, s_j)
 			return
 		if j<column-1:
-			Algoritmos.local_alignment(F, i ,j+1)	
+			self.local_alignment(F, i ,j+1)	
 		else:	
-			Algoritmos.local_alignment(F, i+1 ,1)
+			self.local_alignment(F, i+1 ,1)
+
+	def Alineamiento_Local(self):
+
+		F = np.zeros([self.row, self.column], dtype='i,O') 
+		self.local_alignment(F)
 
 
+		print(len(self.Solution))
 
-	def Alineamiento_Local(self,gap,Identical_Match,Miss_Match,seq1,seq2):
-		Algoritmos.gap = gap
-		Algoritmos.match =  Identical_Match
-		Algoritmos.Miss_Match = Miss_Match
-
-
-		F = np.zeros([Algoritmos.row, Algoritmos.column], dtype='i,O') 
-		Algoritmos.local_alignment(F)
-
-
-		print(len(Algoritmos.Solution))
-
-
+		return self.Solution
 
 
 
@@ -123,11 +141,29 @@ class Operadores():
 		return render(request,'Home.html')
 		
 	def PageOperador(request):
-		Alineamiento = request.POST['fase']
-		Tipo_Arbol = request.POST['arbol']
+		tipo = request.POST['fase']
+		#Tipo_Arbol = request.POST['arbol']
 
 		#print(Alineamiento, Tipo_Arbol)
-		return render(request,'Thresholding.html',{"Algo":Alineamiento,"Arbol":Tipo_Arbol})
+		#return render(request,'Thresholding.html',{"Algo":Alineamiento,"Arbol":Tipo_Arbol})
+
+
+		if (tipo == "AlineamientoLocal") : 
+			return render(request,'AlgoritmoAlineamiento.html',{"Algo":tipo})
+		elif(tipo == "AlineamientoGlobal"):
+			return render(request,'AlgoritmoAlineamiento.html',{"Algo":tipo})	
+		elif(tipo == "Blast"):
+			return render(request,'RaiseToPower.html',{"Algo":tipo})
+		elif(tipo == "Muscle"):
+			return render(request,'RaiseToPower.html',{"Algo":tipo})
+		elif(tipo == "Jukes-cantor"):
+			return render(request,'RaiseToPower.html',{"Algo":tipo})	
+		elif(tipo == "Kimura model"):
+			return render(request,'RaiseToPower.html',{"Algo":tipo})	
+		elif(tipo == "UPGMA"):
+			return render(request,'RaiseToPower.html',{"Algo":tipo})
+		elif(tipo == "Neighbor Joining"):
+			return render(request,'RaiseToPower.html',{"Algo":tipo})
 
 		'''if(tipo == "Thresholding"):
 			return render(request,'Thresholding.html',{"labels":tipo})
@@ -183,9 +219,21 @@ class Operadores():
 			_seq1 = request.POST['Seq1']
 			_seq2 = request.POST['Seq2']	
 
-			Algo_Alinamiento = 	Algoritmos()
-			resultado =  Algo_Alinamiento.Alineamiento_Local(int(_gap), int(_match), int(_missMatch), _seq1, _seq2)
-			return render(request,'ResulTOperador.html',{"labels2":tipo} )	
+			Algo_Alinamiento = 	Algoritmos2(_seq1,_seq2,int(_gap),int(_match),int(_missMatch))
+			resultado = Algo_Alinamiento.Alineamiento_Local()
+			return render(request,'ResulTOperador.html',{"labels2":tipo,"resultados": resultado} )	
+
+		if(tipo == "AlineamientoGlobal"):
+			_gap = request.POST['gap']
+			_match = request.POST['IdenticalMatch']
+			_missMatch = request.POST['MissMatch']	
+
+			_seq1 = request.POST['Seq1']
+			_seq2 = request.POST['Seq2']	
+
+			Algo_Alinamiento = 	Algoritmos2(_seq1,_seq2,int(_gap),int(_match),int(_missMatch))
+			resultado =  Algo_Alinamiento.empezar()
+			return render(request,'ResulTOperador.html',{"labels2":tipo,"resultados": resultado} )	
 
 
 		'''#print(file_name,file_name2)

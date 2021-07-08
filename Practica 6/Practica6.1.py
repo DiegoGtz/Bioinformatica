@@ -3,20 +3,17 @@
 #####################################
 import numpy as np
 
-from Bio import SeqIO
+#from Bio import SeqIO
 
 ######################## Practica 6 ###########################
-matSust=[[ 2,-7,-5,-7],
-         [-7, 2,-7,-5],
-         [-5,-7, 2,-7],
-         [-7,-5,-7, 2]]
+
 
 ##Pregunta2
 #//////////////////////////////////////////////////////
 match = 2
 missMatch = -2 
 
-matSust1 = [[ match,missMatch,missMatch,missMatch],
+matSust = [[ match,missMatch,missMatch,missMatch],
          [missMatch, match,missMatch,missMatch],
          [missMatch,missMatch, match,missMatch],
          [missMatch,missMatch,missMatch, match ]]
@@ -25,8 +22,8 @@ matSust1 = [[ match,missMatch,missMatch,missMatch],
 
 gapOpem=gapEXTEND= -5
 
-S1 = "AAG" #Fila
-S2 = "AGC" #columna
+S1 = "AAGT" #Fila
+S2 = "AGCT" #columna
 
 vec1 = "ACGT"
 vec2 = "ACGT"
@@ -34,7 +31,7 @@ vec2 = "ACGT"
 ss1=""
 ss2=""
 
-def lectura():
+'''def lectura():
     sequences = SeqIO.parse("P21333.fasta", "fasta")
 
     for record in sequences:
@@ -44,7 +41,7 @@ def lectura():
     for record in sequences:
         data2 = str(record.seq.upper())
     return data1,data2
-
+'''
 def encontrar_valor(vec1, pos):
 	for i in range(len(vec1)+1):
 		if (vec1[i] == pos):
@@ -231,8 +228,8 @@ def inciar(s1,s2,gapOpem):
 
 	camino(M_vacia,i,j,ss1,ss2)
 
-data1,data2=lectura()
-print(len(data1))
-print(len(data2))
+#data1,data2=lectura()
+#print(len(data1))
+#print(len(data2))
 
 inciar(S1,S2,gapOpem) 
