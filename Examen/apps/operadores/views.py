@@ -334,9 +334,32 @@ class Algoritmos2():
 
 class Algoritmos_Distancia():
 
+	def distance (self,seq1, seq2):
+	    # Jukes Cantor distance formula: (-3/4)ln[1-p*(4/3)]
+	    p = self.percent_difference_of_nucleotides(seq1, seq2)
+	    return -0.75 * math.log(1 - (p*4/3)) if p else 0
 
+	def percent_difference_of_nucleotides (self,seq1, seq2, nucleobases=set('ACGT')):
+		# percentage of nucleotide difference in two sequences
 
+		diff_count = 0 # number of nucleotide differences
+		valid_nucleotides_count = 0.0 # number of valid nucleotides (value is float for computing percentage)
 
+		for a, b in zip(seq1, seq2):
+			if a in nucleobases and b in nucleobases:
+				valid_nucleotides_count += 1
+				if a != b: diff_count += 1	
+		return diff_count / valid_nucleotides_count if valid_nucleotides_count else 0
+
+	def main2(self,id1, seq1, id2, seq2):
+
+		sequences_read = {} # store previously read sequences
+		sequences_read.update({id1: seq1})
+		new_seq_id = id2
+		new_seq = seq2
+		for seq_id in sequences_read:
+			d = self.distance(new_seq, sequences_read[seq_id])
+			return new_seq_id, seq_id, d
 
 class Operadores():
 	def inicio(request):
