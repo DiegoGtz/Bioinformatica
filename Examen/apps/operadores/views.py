@@ -9,6 +9,14 @@ from django.core.files.base import ContentFile
 
 #####################################################
 
+from Bio import Phylo
+from Bio.Phylo.TreeConstruction import DistanceCalculator
+from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
+from Bio import AlignIO
+from io import StringIO 
+
+import pylab
+
 #import cv2 
 import numpy as np
 from matplotlib import pyplot as plt 
@@ -364,39 +372,119 @@ class Algoritmos_Distancia():
 
 ######################### Codigo kimura ################################
 
-def K2Pdistance(self,seq1,seq2):
-	    """
-	    Kimura 2-Parameter distance = -0.5 log( (1 - 2p -q) * sqrt( 1 - 2q ) )
-	    where:
-	    p = transition frequency
-	    q = transversion frequency
-	    """
-	    from math import log, sqrt
-	    pairs = []
+	def K2Pdistance(self,seq1,seq2):
+		    """
+		    Kimura 2-Parameter distance = -0.5 log( (1 - 2p -q) * sqrt( 1 - 2q ) )
+		    where:
+		    p = transition frequency
+		    q = transversion frequency
+		    """
+		    from math import log, sqrt
+		    pairs = []
 
-	    #collect ungapped pairs
-	    for x in zip(seq1,seq2):
-	        if '-' not in x: pairs.append(x)
-	    ts_count=0
-	    tv_count=0
-	    length = len(pairs)
-	    transitions = [ "AG", "GA", "CT", "TC"]
-	    transversions = [ "AC", "CA", "AT", "TA",
-	                      "GC", "CG", "GT", "TG" ]
+		    #collect ungapped pairs
+		    for x in zip(seq1,seq2):
+		        if '-' not in x: pairs.append(x)
+		    ts_count=0
+		    tv_count=0
+		    length = len(pairs)
+		    transitions = [ "AG", "GA", "CT", "TC"]
+		    transversions = [ "AC", "CA", "AT", "TA",
+		                      "GC", "CG", "GT", "TG" ]
 
-	    for (x,y) in pairs:
-	        if x+y in transitions: ts_count += 1 
-	        elif x+y in transversions: tv_count += 1
-	    
-	    p = float(ts_count) / length
-	    q = float(tv_count) / length
-	    try: d = -0.5 * log( (1 - 2*p - q) * sqrt( 1 - 2*q ) )
-	    except ValueError: 
-	        print ("Numero Negativo")
-	        return None
-	    return d  
-	    
+		    for (x,y) in pairs:
+		        if x+y in transitions: ts_count += 1 
+		        elif x+y in transversions: tv_count += 1
+		    
+		    p = float(ts_count) / length
+		    q = float(tv_count) / length
+		    try: d = -0.5 * log( (1 - 2*p - q) * sqrt( 1 - 2*q ) )
+		    except ValueError: 
+		        print ("Numero Negativo")
+		        return None
+		    return d  
+		    
 #########################################################################################################
+
+class _UPGMA():
+
+	def __init__(self):
+
+		self.M_labels = ["A","B","C","D","E","F","G"]  #A through G
+		self.M = [
+		    [],                         #A
+		    [19],                       #B
+		    [27, 31],                   #C
+		    [8, 18, 26],                #D
+		    [33, 36, 41, 31],           #E
+		    [18, 1, 32, 17, 35],        #F
+		    [13, 13, 29, 14, 28, 12]    #G
+		    ]
+	def lowest_cell(self,table):
+	    # Set default to infinity
+	    min_cell = float("inf")
+	    x, y = -1, -1
+
+	    # Go through every cell, looking for the lowest
+	    for i in range(len(table)):
+	        for j in range(len(table[i])):
+	            if table[i][j] < min_cell:
+	                min_cell = table[i][j]
+	                x, y = i, j
+
+	    # Return the x, y co-ordinate of cell
+	    return x, y
+
+
+	# join_labels:
+	#   Combines two labels in a list of labels
+	def join_labels(self,labels, a, b):
+	    # Swap if the indices are not ordered
+	    if b < a:
+	        a, b = b, a
+
+	    # Join the labels in the first index
+	    labels[a] = "(" + labels[a] + "," + labels[b] + ")"
+
+	    # Remove the (now redundant) label in the second index
+	    del labels[b]
+
+
+	# join_table:
+	#   Joins the entries of a table on the cell (a, b) by averaging their data entries
+	def join_table(self,table, a, b):
+	    # Swap if the indices are not ordered
+	    if b < a:
+	        a, b = b, a
+
+	    # For the lower index, reconstruct the entire row (A, i), where i < A
+	    row = []
+	    for i in range(0, a):
+	        row.append((table[a][i] + table[b][i])/2)
+	    table[a] = row
+	    
+	    # Then, reconstruct the entire column (i, A), where i > A
+	    #   Note: Since the matrix is lower triangular, row b only contains values for indices < b
+	    for i in range(a+1, b):
+	        table[i][a] = (table[i][a]+table[b][i])/2
+	        
+	    #   We get the rest of the values from row i
+	    for i in range(b+1, len(table)):
+	        table[i][a] = (table[i][a]+table[i][b])/2
+	        # Remove the (now redundant) second index column entry
+	        del table[i][b]
+
+	    # Remove the (now redundant) second index row
+	    del table[b]
+	def UPGMA(self):
+		table = self.M
+		labels = self.M_labels
+		while len(labels) > 1:
+			x, y = self.lowest_cell(table)
+			self.join_table(table, x, y)
+			self.join_labels(labels, x, y)
+		return labels[0]
+
 
 class Operadores():
 	def inicio(request):
@@ -423,7 +511,7 @@ class Operadores():
 		elif(tipo == "KimuraModel"):
 			return render(request,'KimuraModel.html',{"Algo":tipo})	
 		elif(tipo == "UPGMA"):
-			return render(request,'RaiseToPower.html',{"Algo":tipo})
+			return render(request,'UPGMA.html',{"Algo":tipo})
 		elif(tipo == "Neighbor Joining"):
 			return render(request,'RaiseToPower.html',{"Algo":tipo})
 
@@ -485,10 +573,24 @@ class Operadores():
 			_seq2 = request.POST['Seq2']	
 
 			distanciaK = Algoritmos_Distancia()
-			res1 =  distanciaK.pdistance(_seq1,_seq2)
+			
 			res2 = distanciaK.K2Pdistance(_seq1,_seq2)
 
-			return render(request,'ResultadoKimura.html',{"labels2":tipo,"res1": res1, "res2": res2} )	
+			return render(request,'ResultadoKimura.html',{"labels2":tipo, "res2": res2} )	
+
+
+		if(tipo == "UPGMA"):
+
+			_seq1 = request.POST['Seq1']
+			_seq2 = request.POST['Seq2']	
+			upgma = _UPGMA()
+			res3= upgma.UPGMA()
+			tree = Phylo.read(StringIO(res3), "newick")
+			Phylo.draw(tree, do_show=False)
+			pylab.axis('off')
+			img = "static/"+'treeUPGMA.png'
+			pylab.savefig(img,format='png', bbox_inches='tight', dpi=300)
+			return render(request,'UPGMAResult.html',{"labels2":tipo, "res3": res3, "image":"/"+img} )	
 
 
 	
