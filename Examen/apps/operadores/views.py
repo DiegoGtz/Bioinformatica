@@ -594,7 +594,6 @@ class Operadores():
 
 			x = np.array(data)
 			print(x)
-		
 			upgma = _UPGMA()
 			res3= upgma.UPGMA()
 			tree = Phylo.read(StringIO(res3), "newick")

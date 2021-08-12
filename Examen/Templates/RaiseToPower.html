@@ -15,10 +15,9 @@
        </div>
 
     <div class="box">
-      <h4 class="title"><i class="fa fa-camera"></i>&nbsp Add Image</h4>
       <div class="drag-drop">
         <form action="{% url 'Home2:ControladorOperador' %}" method='post' enctype="multipart/form-data">{% csrf_token %}
-        <p class="section-description">Seleccione los parametros y la imagen</p>
+        <p class="section-description">Seleccione los parametros o el archivo </p>
         <label for=""> C = </label>
         <input type="text" id="" name="c">
         <label for=""> R = </label>

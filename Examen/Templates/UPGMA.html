@@ -17,7 +17,7 @@
     <div class="box">
       <div class="drag-drop">
         <form action="{% url 'Home2:ControladorOperador' %}" method='post' enctype="multipart/form-data">{% csrf_token %}
-        <p class="section-description">Ingrese los parametros</p>
+        <p class="section-description">Ingrese el archivo con la matriz de distancia </p>
         <br>
         <input type="file"  id="files" name="file1" />  
                 <br>

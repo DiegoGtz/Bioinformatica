@@ -6,14 +6,17 @@ import numpy as np
 #from Bio import SeqIO
 
 ######################## Practica 6 ###########################
-
+matSust=[[ 2,-7,-5,-7],
+         [-7, 2,-7,-5],
+         [-5,-7, 2,-7],
+         [-7,-5,-7, 2]]
 
 ##Pregunta2
 #//////////////////////////////////////////////////////
 match = 2
 missMatch = -2 
 
-matSust = [[ match,missMatch,missMatch,missMatch],
+matSust1 = [[ match,missMatch,missMatch,missMatch],
          [missMatch, match,missMatch,missMatch],
          [missMatch,missMatch, match,missMatch],
          [missMatch,missMatch,missMatch, match ]]
@@ -22,8 +25,8 @@ matSust = [[ match,missMatch,missMatch,missMatch],
 
 gapOpem=gapEXTEND= -5
 
-S1 = "AAGT" #Fila
-S2 = "AGCT" #columna
+S1 = "AAG" #Fila
+S2 = "AGC" #columna
 
 vec1 = "ACGT"
 vec2 = "ACGT"
